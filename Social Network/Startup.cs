@@ -40,6 +40,7 @@ namespace Social_Network
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Helpers.Media.WebRootStoragePath = env.WebRootPath + "/storage/";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
