@@ -13,7 +13,7 @@ namespace Social_Network.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<User> Users { get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -22,6 +22,10 @@ namespace Social_Network.Data
             builder.Entity<User>()
                 .Property(b => b.CreatedAt)
                 .HasDefaultValueSql("getdate()");
+
+            //builder.Entity<Comment>()
+            //       .Property(t => t.Post)
+            //       .IsRequired();
 
             builder.Entity<Comment>()
             .Property(b => b.CreatedAt)
@@ -39,9 +43,9 @@ namespace Social_Network.Data
             .Property(b => b.CreatedAt)
             .HasDefaultValueSql("getdate()");
 
-            //builder.Entity<User>()
-            //.Property(b => b.ProfileUrl)
-            //.HasDefaultValueSql("/storage/default/default_profile_img.png");
+            builder.Entity<User>()
+            .Property(b => b.ProfileUrl)
+            .HasDefaultValueSql("'/storage/default/default_profile_img.png'");
 
 
             //

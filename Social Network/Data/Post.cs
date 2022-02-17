@@ -16,5 +16,6 @@ namespace Social_Network.Data
         public List<Like> Likes { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<Image> Images { get; set; }
+        public string Text { get; set; }
     }
 }
