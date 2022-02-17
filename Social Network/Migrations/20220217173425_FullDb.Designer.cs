@@ -10,8 +10,8 @@ using Social_Network.Data;
 namespace Social_Network.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220217173001_LikesInComments")]
-    partial class LikesInComments
+    [Migration("20220217173425_FullDb")]
+    partial class FullDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

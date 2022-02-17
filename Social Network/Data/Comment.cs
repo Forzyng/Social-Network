@@ -14,7 +14,7 @@ namespace Social_Network.Data
         [Required]
         public Post Post { get; set; }
         public User Author { get; set; }
-
+        public List<Like> Likes { get; set; }
         public Comment? ParentComment { get; set; }
         public List<Comment> ChildrenComments { get; set; }
         public DateTime CreatedAt { get; set; }
