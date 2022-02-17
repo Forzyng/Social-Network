@@ -8,9 +8,9 @@ namespace Social_Network.Data
 {
     public class User : IdentityUser
     {
-        public List<Post> Friends { get; set; }
-        public List<Post> Followers { get; set; }
-        public List<Post> Following { get; set; }
+        public List<Friend> Friends { get; set; }
+        public List<User> Followers { get; set; }
+        public List<User> Following { get; set; }
 
         public List<Post> Posts { get; set; }
         public List<Comment> Comments { get; set; }

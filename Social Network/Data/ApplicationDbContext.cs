@@ -13,6 +13,7 @@ namespace Social_Network.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -38,33 +39,42 @@ namespace Social_Network.Data
             .Property(b => b.CreatedAt)
             .HasDefaultValueSql("getdate()");
 
-            builder.Entity<User>()
-            .Property(b => b.ProfileUrl)
-            .HasDefaultValueSql("/storage/default/default_profile_img.png");
-            
+            //builder.Entity<User>()
+            //.Property(b => b.ProfileUrl)
+            //.HasDefaultValueSql("/storage/default/default_profile_img.png");
+
 
             //
 
-            builder.Entity<User>()
-               .HasMany(b => b.Posts)
-               .WithOne(t => t.Author)
-               .HasForeignKey(j => j.Author.Id);
+            //builder.Entity<User>()
+            //   .HasMany(b => b.Posts)
+            //   .WithOne(t => t.Author)
+            //   .HasForeignKey(j => j.Author.Id);
 
-            builder.Entity<User>()
-              .HasMany(b => b.Likes)
-              .WithOne(t => t.Author)
-              .HasForeignKey(j => j.Author.Id);
+            //builder.Entity<User>()
+            //  .HasMany(b => b.Likes)
+            //  .WithOne(t => t.Author)
+            //  .HasForeignKey(j => j.Author.Id);
 
-            builder.Entity<User>()
-              .HasMany(b => b.Comments)
-              .WithOne(t => t.Author)
-              .HasForeignKey(j => j.Author.Id);
+            //builder.Entity<User>()
+            //  .HasMany(b => b.Comments)
+            //  .WithOne(t => t.Author)
+            //  .HasForeignKey(j => j.Author.Id);
 
             //
 
+
             builder.Entity<User>()
-                .HasMany(f => f.Followers)
-                .WithOne(u => u)
+                .HasMany(x => x.Followers)
+                .WithMany(x => x.Following)
+                .UsingEntity(j => j.ToTable("Follow"));
+
+
+
+                //.Map(x => x.ToTable("Followers")
+                  //  .MapLeftKey("UserId")
+                    //.MapRightKey("FollowerId"));
+
 
 
 
