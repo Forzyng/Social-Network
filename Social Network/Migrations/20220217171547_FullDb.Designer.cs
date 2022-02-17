@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Social_Network.Data;
 
-namespace Social_Network.Data.Migrations
+namespace Social_Network.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220217164633_IMGProblemsFIXED")]
-    partial class IMGProblemsFIXED
+    [Migration("20220217171547_FullDb")]
+    partial class FullDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,7 +173,7 @@ namespace Social_Network.Data.Migrations
                     b.Property<Guid?>("ParentCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PostId")
+                    b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -306,6 +306,9 @@ namespace Social_Network.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -485,7 +488,9 @@ namespace Social_Network.Data.Migrations
 
                     b.HasOne("Social_Network.Data.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
 
