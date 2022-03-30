@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Social_Network.Migrations
 {
-    public partial class FullDb : Migration
+    public partial class FullDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,6 +32,7 @@ namespace Social_Network.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValueSql: "'/storage/default/default_profile_img.png'"),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Login = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthYear = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

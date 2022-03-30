@@ -12,6 +12,21 @@ a {
   color: #0366d6;
 }
 
+.profileIcon {
+    border: 1px solid white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.IsUnique{
+    color: green;
+}
+
+.IsNotUnique {
+    color: red;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
