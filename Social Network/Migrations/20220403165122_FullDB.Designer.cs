@@ -10,7 +10,7 @@ using Social_Network.Data;
 namespace Social_Network.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220304145401_FullDB")]
+    [Migration("20220403165122_FullDB")]
     partial class FullDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -363,9 +363,6 @@ namespace Social_Network.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Login")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

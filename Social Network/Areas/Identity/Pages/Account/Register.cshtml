@@ -82,59 +82,5 @@
 
 @section Scripts {
 
-    <script>
-
-
-        function GetLoginIdentity(login)
-        {
-            console.log("Check login");
-            fetch("/api/IsUserNameUnique/" + login.value)
-                .then(res => res.json())
-                .then(dirs => {
-                    console.log(dirs);
-                    if (dirs[0] === "The Login is not unique") {
-
-                        document.getElementById("regLoginSpan").innerText = dirs[0];
-
-                        document.getElementById("regLoginSpan").classList.remove("IsNotUnique");
-                        document.getElementById("regLoginSpan").classList.remove("IsUnique");
-
-                        document.getElementById("regLoginSpan").classList.add("IsNotUnique");
-                    }
-                    else {
-                        document.getElementById("regLoginSpan").innerText = dirs[0];
-
-                        document.getElementById("regLoginSpan").classList.remove("IsNotUnique");
-                        document.getElementById("regLoginSpan").classList.remove("IsUnique");
-
-                        document.getElementById("regLoginSpan").classList.add("IsUnique");
-                    }
-                }).catch(err => { console.log(err) })
-        }
-        let login = document.getElementById("regLoginInput");
-
-
-
-        login.onchange = function () {
-            console.log("start");
-
-            
-            if (login === undefined || login === null || login.length > 15 || login.length < 3) {
-                document.getElementById("regLoginSpan").innerText = "The Login must be at least 3 and at max 15 characters long.";
-                document.getElementById("regLoginSpan").classList.remove("IsNotUnique");
-                document.getElementById("regLoginSpan").classList.remove("IsUnique");
-
-                document.getElementById("regLoginSpan").classList.add("IsNotUnique");
-                return;
-            } else
-            {
-                GetLoginIdentity(login);
-
-                    
-            }
-            
-        }
-    </script>
-
     <partial name="_ValidationScriptsPartial" />
 }

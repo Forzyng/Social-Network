@@ -21,7 +21,6 @@ namespace Social_Network.Data
         public string Status { get; set; }
         public string ProfileUrl { get; set; }
         public string FullName { get; set; }
-        public string Login { get; set; }
         public string Location { get; set; }
         public DateTime BirthYear { get; set; }
     }
