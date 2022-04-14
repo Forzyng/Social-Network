@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-
+using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -50,9 +50,17 @@ namespace Social_Network.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Invalid user");
                 return Page();
             }
+
+            if(await _userManager.IsEmailConfirmedAsync(user))
+            {
+                ModelState.AddModelError(string.Empty, "Email already confirmed");
+                return Page();
+            }
+
+
 
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -62,13 +70,29 @@ namespace Social_Network.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+          
+
+
+           // await Helpers.Notifications.Email.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            
+          
+
+            string myHostUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            string subject = "Confirm your email";
+            string message = $"<p>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>";
+            string button_Url = $"{HtmlEncoder.Default.Encode(callbackUrl)}";
+      
+
+            await Helpers.Notifications.Email.SendEmailAsync(Input.Email, subject, message, myHostUrl, button_Url);
 
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
-            return Page();
+
+
+
+            
+            //return Page();
+            return RedirectToPage("./Login");
         }
     }
 }

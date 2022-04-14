@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Social_Network.Data;
+using System.IO;
 
 namespace Social_Network.Areas.Identity.Pages.Account
 {
@@ -57,10 +58,19 @@ namespace Social_Network.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            
+
+                
+                string myHostUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                string subject = "Reset password";
+                string message = $"<p>Reset Password. First, you need to confirm your account. Just press the button below.</p>";
+                string button_Url = $"{HtmlEncoder.Default.Encode(callbackUrl)}";
+
+
+                await Helpers.Notifications.Email.SendEmailAsync(Input.Email, subject, message, myHostUrl, button_Url);
+
+                //await Helpers.Notifications.Email.SendEmailAsync(user.Email, "Reset password", $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

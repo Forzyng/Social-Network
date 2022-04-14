@@ -10,8 +10,8 @@ using Social_Network.Data;
 namespace Social_Network.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220403165122_FullDB")]
-    partial class FullDB
+    [Migration("20220413161652_FullDBandCallbacks")]
+    partial class FullDBandCallbacks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,6 +154,28 @@ namespace Social_Network.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Social_Network.Data.Callback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Callbacks");
                 });
 
             modelBuilder.Entity("Social_Network.Data.Comment", b =>

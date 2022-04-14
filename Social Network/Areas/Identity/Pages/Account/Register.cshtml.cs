@@ -62,17 +62,8 @@ namespace Social_Network.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Telegram Id")]
-            public string TelegramId { get; set; }
 
-            [Required]
-            [RegularExpression(@"^[a-zA-Z ]*$", ErrorMessage = "Full name must contains only letters")]
-            [StringLength(30, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Full name")]
-            public string Fullname { get; set; }
+            
 
             [Required]
             [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Username must contains only letters")]
@@ -94,20 +85,20 @@ namespace Social_Network.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                
-                if(await _userManager.FindByNameAsync(Input.Login) != null)
+                if (await _userManager.FindByEmailAsync(Input.Email) != null)
+                {
+                    ModelState.AddModelError(string.Empty, "This E-mail is already taken");
+                    return Page();
+                }
+
+                if (await _userManager.FindByNameAsync(Input.Login) != null)
                 {
                     ModelState.AddModelError(string.Empty, "This Login is already taken");
                     return Page();
                 }
 
-                if (await _userManager.FindByEmailAsync(Input.Email) != null)
-                {
-                    ModelState.AddModelError(string.Empty, "This email is already taken");
-                    return Page();
-                }
 
-                var user = new User { UserName = Input.Login, Email = Input.Email, TelegramId = Input.TelegramId, FullName = Input.Fullname};
+                var user = new User { UserName = Input.Login, Email = Input.Email, FullName = "Noname"};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

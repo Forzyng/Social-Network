@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Social_Network.Data;
 using System.Text.Encodings.Web;
+using System.IO;
 
 namespace Social_Network.Areas.Identity.Pages.Account
 {
@@ -55,8 +56,17 @@ namespace Social_Network.Areas.Identity.Pages.Account
                     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
-            await Helpers.Notifications.Email.SendEmailAsync(email, "Confirming", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(EmailConfirmationUrl)}'>clicking here</a>.");
 
+            string myHostUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            string subject = "Confirm your email";
+            string message = $"<p>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>";
+            string button_Url = $"{HtmlEncoder.Default.Encode(EmailConfirmationUrl)}";
+
+
+            await Helpers.Notifications.Email.SendEmailAsync(email, subject, message, myHostUrl, button_Url);
+
+
+            
             //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
             //         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 

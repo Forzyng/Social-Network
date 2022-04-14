@@ -44,7 +44,7 @@ namespace Social_Network.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            public string UserName { get; set; }
+            public string Information { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -82,7 +82,7 @@ namespace Social_Network.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
-                var user = await _userManager.FindByNameAsync(Input.UserName) ?? await _userManager.FindByEmailAsync(Input.UserName);
+                var user = await _userManager.FindByNameAsync(Input.Information) ?? await _userManager.FindByEmailAsync(Input.Information);
                 if(user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");

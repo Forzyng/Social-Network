@@ -1,33 +1,40 @@
-﻿@page
-@model ForgotPasswordModel
-@{
-    ViewData["Title"] = "Forgot your password?";
-}
-
-@*<h1>@ViewData["Title"]</h1>
-<h4>Enter your email.</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+﻿
+@*<div class="navbar-nav">
+    <h2 id="textfooter"></h2>
+    <form class="formfooter">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="callbackName" placeholder="Name">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-</div>*@
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="callbackPhone" placeholder="Phone">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="callbackEmail" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-primary" id="callbackSend" value="Send">Send</button>
+            </div>
+        </div>
 
+
+    </form>
+</div>*@
 
 <!DOCTYPE html>
 <html>
 
 <head>
     <title></title>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
@@ -140,7 +147,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">We will sent you a letter, where you need to confirm E-mail. Than you will be avaible to reset password.</p>
+                            <p style="margin: 0;">You need to fill out a form and we will contact in 30 minutes. Be sure the dta is correct or we won`be avilble to call you </p>
                         </td>
                     </tr>
                     <tr>
@@ -151,15 +158,26 @@
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td align="center" style="border-radius: 3px;" bgcolor="#ffffff">
-                                                    <form method="post">
-                                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                                    <form>
+                                                         <div id="Errors" class="text-danger"></div>
+                                                          
                                                     <div class="form-group">
-                                                    <input asp-for="Input.Email" bgcolor="#dcdcdc"  placeholder="E-mail" color: #000000>
-                                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-	            	                                <button style="margin-top: 15px;" id="buttonResend" type="submit" class="form-control btn btn-primary submit px-3">Reset</button>
-		      		                                <div style="font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; " align="center" id="timer">(Check your spam folder too)</div>
+                                                    <input type="text" id="callbackName" placeholder="Name" bgcolor="#dcdcdc"  color: #000000>
+                                                    
+
+                                                    <input type="email" bgcolor="#dcdcdc"  id="callbackEmail" placeholder="E-mail" color: #000000>
+                                                    
+
+                                                    <input type="text" id="callbackPhone" placeholder="Phone" bgcolor="#dcdcdc"  color: #000000>
+                                                    
+
+	            	                                <button style="margin-top: 15px;"  id="callbackSend"  class="form-control btn btn-primary submit px-3">Get Help</button>
+		      		                                <div style="font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; " align="center" id="timer">(After sending, page will be updated)</div>
                                                </div>
                                                </form>
+
+                                               
+
                                                </td>
                                             </tr>
                                         </table>
@@ -200,6 +218,65 @@
 
 </html>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<script>
+    let apiCallback = "/api/StoreCallback";
+    let h1 = document.getElementById("Errors");
+    let reSpecCase = new RegExp("[!#\\$%\\^&\\*\\(\\)\\[\\]]");
+    let re = new RegExp("[0-9]");
+    let reUpperCase = new RegExp("[A-Z]");
+    let reLowerCase = new RegExp("[a-z]");
+    document.getElementById("callbackSend").onclick = function () {
+        if (document.getElementById("callbackName").value.length < 3) {
+            h1.innerText = "Name must be 3 and more letters";
+            return;
+        }
+        if (re.exec(document.getElementById("callbackName").value) !== null) {
+            h1.innerText = "Name must be without numbers";
+            return;
+        }
+        if (reSpecCase.exec(document.getElementById("callbackName").value) !== null) {
+            h1.innerText = "Name must be without special symbols";
+            return;
+        }
+        if (document.getElementById("callbackPhone").value.length < 9) {
+            h1.innerText = "Phone must be 9 or more numbers";
+            return;
+        }
+        if (reUpperCase.exec(document.getElementById("callbackPhone").value) !== null) {
+            h1.innerText = "Phone must be without letters";
+            return;
+        } 
+        if (reLowerCase.exec(document.getElementById("callbackPhone").value) !== null) {
+            h1.innerText = "Phone must be without letters";
+            return;
+        }
+        let CallBack =
+        {
+            Name: document.getElementById("callbackName").value,
+            Phone: document.getElementById("callbackPhone").value,
+            Email: document.getElementById("callbackEmail").value
+        }
+        console.log(CallBack);
+        function onError(err) {
+            console.log("Err");
+            console.log(err);
+        }
+        fetch(apiCallback, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(CallBack)
+        })
+            .then(res => {
+                console.log(res);
+                return res.json();
+                h1.innerText = "Our operators will call you in next 30 minutes";
+                document.getElementById("callbackSend").disbled = true;
+            })
+            .then(cb => {
+                console.log(cb);
+            })
+            .catch(err => { onError(err); })
+    }
+</script>

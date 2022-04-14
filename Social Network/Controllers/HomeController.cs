@@ -23,6 +23,16 @@ namespace Social_Network.Controllers
             return View();
         }
 
+        public IActionResult Help()
+        {
+            return View();
+        }
+
+        public IActionResult Callback()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
