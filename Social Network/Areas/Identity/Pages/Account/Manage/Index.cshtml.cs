@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,6 +25,9 @@ namespace Social_Network.Areas.Identity.Pages.Account.Manage
         }
 
         public string Username { get; set; }
+        public string CreatedAt { get; set; }
+       
+
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -36,18 +40,51 @@ namespace Social_Network.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Username must contains only letters")]
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Full Name")]
+            public string Fullname { get; set; }
+
+            [Display(Name = "Profile Image")]
+            public string ProfileUrl { get; set; }
+
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Status")]
+            [StringLength(15, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 0)]
+            public string Status { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Description")]
+            [StringLength(125, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 0)]
+            public string Desription { get; set; }
+
         }
 
         private async Task LoadAsync(User user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var fullname = user.FullName;
+            var profileurl = user.ProfileUrl;
+            var status = user.Status;
+            var description = user.Desription;
+
+            var createdAt = user.CreatedAt.ToString();
 
             Username = userName;
+            CreatedAt = createdAt;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Fullname = fullname,
+                ProfileUrl = profileurl,
+                Status = status,
+                Desription = description
             };
         }
 
@@ -63,7 +100,7 @@ namespace Social_Network.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(IFormFile img)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -86,6 +123,39 @@ namespace Social_Network.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if ( Input.PhoneNumber == phoneNumber && Input.Fullname == user.FullName && Input.Desription == user.Desription&& Input.Status == user.Status && img == null)
+            {
+                StatusMessage = "You nothing changed";
+                return RedirectToPage();
+            }
+
+            if (img != null)
+            {
+                var newProfileUrl = Helpers.Media.UploadProfilePictures(img, "Profile_Pictures");
+                if (string.IsNullOrEmpty(newProfileUrl))
+                {
+                    StatusMessage = "Something went wrong due uploading new avatar.";
+                    return RedirectToPage();
+                }
+                else
+                {
+                    user.ProfileUrl = newProfileUrl;
+                }
+            }
+
+            user.FullName = Input.Fullname;
+            user.Status = Input.Status;
+            user.PhoneNumber = Input.PhoneNumber;
+            user.Desription = Input.Desription;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = "Oooops, there was error in uploading your informtion. Try gain";
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);

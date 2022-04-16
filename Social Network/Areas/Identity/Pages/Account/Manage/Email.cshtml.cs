@@ -100,10 +100,15 @@ namespace Social_Network.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+
+                string myHostUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                string subject = "Confirm your email";
+                string message = $"<p>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>";
+                string button_Url = $"{HtmlEncoder.Default.Encode(callbackUrl)}";
+
+
+                await Helpers.Notifications.Email.SendEmailAsync(email, subject, message, myHostUrl, button_Url);
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();

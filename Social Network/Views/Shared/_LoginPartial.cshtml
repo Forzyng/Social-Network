@@ -2,25 +2,39 @@
 @inject SignInManager<Social_Network.Data.User> SignInManager
 @inject UserManager<Social_Network.Data.User> UserManager
 
+    
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+         <div class="dropdown">
+
+        <a   class="nav-link text-dark btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Manage" ><img class="round" style="width:50px" src="@UserManager.GetUserAsync(User).GetAwaiter().GetResult().ProfileUrl"/><span style="margin-left: 7px;font-weight:bold;">@User.Identity.Name</span></a>
+        <div class="dropdown-menu">
+  <a class="dropdown-item" href="/MyProfile" style="text-decoration: none"><img src="~/storage/default/profile-icon.png" style="width:20px"/><span style="margin-left: 7px; ">My Profile</span></a>
+  @*<a class="dropdown-item" href="#"><img src="~/storage/default/notification-icon.png style="width:20px"/><span style="margin-left: 5px;">Notifictions</span></a>*@
+  <a class="dropdown-item" href="#" style="text-decoration: none"><img src="~/storage/default/history-icon.webp" style="width:20px"/><span style="margin-left: 7px;">History</span></a>
+  <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" style="text-decoration: none"><img src="~/storage/default/setting-icon.webp" style="width:20px"/><span style="margin-left: 7px;">Settings</span></a>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item"  asp-area="Identity" asp-page="/Account/Logout" style="text-decoration: none"><img src="~/storage/default/logout.png" style="width:20px"/><span style="margin-left: 7px;"> Logout</span></a>
+</div>
+</div>
     </li>
-    <li class="nav-item">
+    
+    @*<li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
-    </li>
+    </li>*@
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register"><img src="/storage/default/register-icon.png" style="width:25px;" /></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"><img src="/storage/default/login.png" style="width:25px;" /></a>
     </li>
 }
 </ul>
+
