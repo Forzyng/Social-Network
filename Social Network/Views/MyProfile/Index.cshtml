@@ -2,7 +2,7 @@
 
 @*@model Social_Network.Data.Post*@
 
-<section style="background-color: #eee;">
+<section style="background-color: #ebebeb;">
   <div class="container py-5">
   @*  <div class="row">
       <div class="col">
@@ -23,9 +23,17 @@
             <img src="@Model.ProfileUrl" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
             <h5 class="my-3">@@@Model.UserName</h5>
             <p class="text-muted mb-1"> @Model.FullName</p>
-            <p class="text-muted mb-4">Status: @Model.Status</p>
-            <div class="d-flex justify-content-center mb-1">
-              <button type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index">Redact Profile</button>
+            @if(@Model.Status != null)
+            {
+ <p class="text-muted mb-4">Status: @Model.Status</p>
+            }
+           
+           
+             <div class="d-flex justify-content-center mb-1">
+               <button style="border-radius: 8px; border: 1px solid #b2b2b2" type="button" class="btn btn-outline-primary ms-1" asp-area="Identity" asp-page="/Account/Manage/Index">Redact Profile</button>
+              
+             
+             
             </div>
           </div>
         </div>
@@ -55,154 +63,194 @@
             </ul>
           </div>
         </div>*@
+        <div class="row">
+                        <div class="col-md-4 mb20" style="text-align:center">
+                             @if (Model.Followers != null)
+                            {
+                                <h5 class="text-muted mb-0">@Model.Followers.Count</h5>
+                            }
+                            else
+                            {
+                                <h5 class="text-muted mb-0">0</h5>
+                            }
+                            <h6 class="text-small text-muted">Followers</h6>
+                        </div>
+                        <div class="col-md-4 mb20" style="text-align:center">
+                              @if (Model.Following != null)
+                            {
+                                    <h5 class="text-muted mb-0">@Model.Following.Count</h5>
+                                }
+                                else
+                                {
+                                    <h5 class="text-muted mb-0">0</h5>
+                                }
+                            <h6 class="text-small text-muted">Following</h6>
+                        </div>
+                        <div class="col-md-4 mb20" style="text-align:center">
+                             @if (Model.Posts != null)
+                            {
+                                <h5 class="text-muted mb-0">@Model.Posts.Count</h5>
+                            }
+                            else
+                            {
+                                <h5 class="text-muted mb-0">0</h5>
+                            }
+                            <h6 class="text-small text-muted">Posts</h6>
+                        </div>
+                    </div>
       </div>
       <div class="col-lg-8">
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Following</p>
+                <p class="mb-0">Here from</p>
               </div>
               <div class="col-sm-9">
-                 @if (Model.Following != null)
-                            {
-                                    <p class="text-muted mb-0">@Model.Following.Count</p>
-                                }
-                                else
-                                {
-                                    <p class="text-muted mb-0">0</p>
-                                }
+                                    <p class="text-muted mb-0">@Model.CreatedAt.ToShortDateString()</p>                   
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Followers</p>
+                <p class="mb-0">Full Name</p>
               </div>
               <div class="col-sm-9">
-                   @if (Model.Followers != null)
-                            {
-                                <p class="text-muted mb-0">@Model.Followers.Count</p>
-                            }
-                            else
-                            {
-                                <p class="text-muted mb-0">0</p>
-                            }
-                
+                                <p class="text-muted mb-0">@Model.FullName</p>  
               </div>
             </div>
             <hr>
+            @if (Model.Status != null)
+                            {
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Posts</p>
+                <p class="mb-0">Status</p>
               </div>
               <div class="col-sm-9">
-                   @if (Model.Posts != null)
-                            {
-                                <p class="text-muted mb-0">@Model.Posts.Count</p>
-                            }
-                            else
-                            {
-                                <p class="text-muted mb-0">0</p>
-                            }
+                   
+                                <p class="text-muted mb-0">@Model.Status</p>
+                           
+                          
                 
               </div>
             </div>
             <hr>
+                            }
+            @if (Model.Desription != null)
+                            {
             <div class="row">
               <div class="col-sm-3">
                 <p class="mb-0">Description</p>
               </div>
               <div class="col-sm-9">
-                  @if (Model.Desription != null)
-                            {
+                  
                                 <p class="text-muted mb-0">@Model.Desription</p>
-                            }
-                            else
-                            {
-                                <p class="text-muted mb-0"></p>
-                            }
-                
               </div>
             </div>
             <hr>
+                            }
+             @if (Model.Location != null)
+                            {
             <div class="row">
               <div class="col-sm-3">
                 <p class="mb-0">Area</p>
               </div>
               <div class="col-sm-9">
-                   @if (Model.Location != null)
-                            {
-                                <p class="text-muted mb-0">@Model.Location</p>
-                            }
-                            else
-                            {
-                                <p class="text-muted mb-0"></p>
-                            }
-                
+                  
+                                <p class="text-muted mb-0">@Model.Location</p>      
               </div>
             </div>
+             <hr>
+                            }
+                           
           </div>
         </div>
-        @*<div class="row">
-          <div class="col-md-6">
+         <div class="row">
+          <div class="col-md-12">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body" id="yourimg">
+                  <img id="result" />
+                  
+          </div>
+        </div>
+         </div>
+        </div>
+
+        <form  method="post" enctype="multipart/form-data">
+      <div class="row">
+          <div class="col-md-12">
             <div class="card mb-4 mb-md-0">
               <div class="card-body">
-                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status</p>
-                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                <div class="progress rounded mb-2" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>*@
-          
-         @* <div class="col-md-6">
-            <div class="card mb-4 mb-md-0">
-              <div class="card-body">
-                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status</p>
-                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                <div class="progress rounded mb-2" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+             <div class="md-form">
+                 <div class="row">
+                      <textarea style="resize: none; height: 150px; margin-bottom: 7px;" maxlength="250" id="form10" class="md-textarea form-control" rows="3"></textarea>
+
+
+  <div class="col-md-3">
+      <button class="btn btn-primary" style="border-radius: 8px; border: 1px solid #b2b2b2; ">Add</button>
+  </div>
+  <div class="col-md-9">
+      <div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroupFileAddon01" href="#" ><img src="/storage/default/trash_can_icon.png"  style="width:25px;" /></span>
+  </div>
+  <div class="custom-file">
+    <input type="file" accept=".jpg, .jpeg, .png, .bmp"  class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01"
+      aria-describedby="inputGroupFileAddon01">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+
+  </div>
+</div>
+
+
+
+</div>
+
+  </div>
+</div>
               </div>
             </div>
           </div>
-          
-        </div>*@
+          </div>
+</form>
+     
       </div>
     </div>
   </div>
 </section>
+
+<script>
+FReader = new FileReader();
+ 
+// событие, когда файл загрузится
+FReader.onload = function(e) {
+    document.querySelector("#result").src = e.target.result;
+};
+ 
+// выполнение функции при выборки файла
+document.querySelector("input").addEventListener("change", loadImageFile);
+ 
+// функция выборки файла
+function loadImageFile() {
+    var file = document.querySelector("input").files[0];
+    FReader.readAsDataURL(file);
+}
+
+//
+
+var but=document.querySelector("#inputGroupFileAddon01");
+var img=document.querySelector("#result");
+var inp=document.querySelector("#inputGroupFile01");
+but.onclick=function(){
+
+   inp.value="";
+   img.src="";
+
+}
+
+
+
+
+
+
+</script>
